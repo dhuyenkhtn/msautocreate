@@ -33,7 +33,9 @@ function password_gen() {
 }
 
 async function validateRecaptcha(token) {
+    console.log('env:', process.env.ENV);
     if (process.env.ENV === 'dev') return true;
+
     try {
         const url = 'https://www.google.com/recaptcha/api/siteverify';
         const post_data = {
@@ -171,16 +173,19 @@ async function validateCode(code) {
     try {
         if (process.env.ENV === 'dev') return true;
 
-        const url = `${site_config.api_url}/tokens/check`
-        const response = await fetch(url, {
+        const url = `${site_config.api_url}/tokens/check`;
+        const data = {
             method: 'POST',
             body: JSON.stringify({
                 token: code
-            })
-        });
-        
-        return await response.json();
+            }),
+            headers: { 'Content-Type': 'application/json' }
+        };
+
+        const response = await fetch(url, data);
+        return !!response.ok;
     } catch (e) {
+        console.log(e);
         throw new Error('INVALID_CODE');
     }
 }
@@ -192,7 +197,7 @@ async function deleteCode(code) {
         method: 'POST',
         body: JSON.stringify({
             'action': 'delCode',
-            'code': code
+            'code': code,
         })
     });
     return await response.text();
@@ -202,15 +207,19 @@ async function useCode(code) {
     try {
         if (process.env.ENV === 'dev') return true;
         
-        const url = `${site_config.api_url}/tokens/use`
-        const response = await fetch(url, {
+        const url = `${site_config.api_url}/tokens/use`;
+        const data = {
             method: 'POST',
             body: JSON.stringify({
                 token: code,
                 useFor: 'INDIVIDUAL_CUSTOMER'
-            })
-        });
-        return await response.text();
+            }),
+            headers: { 'Content-Type': 'application/json' }
+        };
+
+        const response = await fetch(url, data);
+
+        return !!response.ok;
     } catch(e) {
         throw new Error('CODE_HAS_NOT_BEEN_USED');
     }
