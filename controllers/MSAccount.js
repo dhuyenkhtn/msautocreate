@@ -170,13 +170,15 @@ async function createUser(requestBody, access_token) {
 async function validateCode(code) {
     try {
         if (process.env.ENV === 'dev') return true;
-        const response = await fetch(site_config.code_api_link, {
+
+        const url = `${site_config.api_url}/tokens/check`
+        const response = await fetch(url, {
             method: 'POST',
             body: JSON.stringify({
-                'action': 'checkCode',
-                'code': code
+                token: code
             })
         });
+        
         return await response.json();
     } catch (e) {
         throw new Error('INVALID_CODE');
@@ -185,11 +187,26 @@ async function validateCode(code) {
 
 async function deleteCode(code) {
     if (process.env.ENV === 'dev') return true;
-    const response = await fetch(site_config.code_api_link, {
+
+    const response = await fetch(site_config.api_url, {
         method: 'POST',
         body: JSON.stringify({
             'action': 'delCode',
             'code': code
+        })
+    });
+    return await response.text();
+}
+
+async function useCode(code) {
+    if (process.env.ENV === 'dev') return true;
+
+    const url = `${site_config.api_url}/tokens/use`
+    const response = await fetch(url, {
+        method: 'POST',
+        body: JSON.stringify({
+            token: code,
+            useFor: 'INDIVIDUAL_CUSTOMER'
         })
     });
     return await response.text();
@@ -208,7 +225,7 @@ async function createAccountMS(req, res) {
             const account = await createUser(requestBody, ms_token);
             
             if (account.stat == 'success') {
-                await deleteCode(requestBody.code);
+                await useCode(requestBody.code);
             }
             
             return res.status(200).send(account);

@@ -5,6 +5,7 @@ const site_config =
         'line1': 'Auto Create Office',
         'line2': 'Sell Office 365 Enterprise',
         'code_api_link': 'https://key-manager-msauto.herokuapp.com/active',
+        'api_url': 'http://api-etms.alhewaytech.com',
     };
 
 const ms_config =

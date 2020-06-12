@@ -94,7 +94,7 @@
     <div class="mdui-dialog-title">Creation failed...</div>
     <div class="mdui-dialog-content">Human-machine verification error！</div>
     <div class="mdui-dialog-actions">
-        <button class="mdui-btn mdui-ripple" mdui-dialog-confirm>I know</button>
+        <button class="mdui-btn mdui-ripple should-restart" mdui-dialog-confirm>I know</button>
     </div>
 </div>
 
@@ -102,7 +102,7 @@
     <div class="mdui-dialog-title">Creation failed...</div>
     <div class="mdui-dialog-content">Invalid activation code！</div>
     <div class="mdui-dialog-actions">
-        <button class="mdui-btn mdui-ripple" mdui-dialog-confirm>I know</button>
+        <button class="mdui-btn mdui-ripple should-restart" mdui-dialog-confirm>I know</button>
     </div>
 </div>
 
@@ -252,6 +252,13 @@
                 new mdui.Dialog("#notice", mduiDialogOptions).open();
             }
         }, 1000);
+        
+        const closeButtons = document.getElementsByClassName('should-restart');
+        closeButtons.addEventListener('click', function(e) {
+            setTimeout(function() {
+                window.location.reload();
+            }, 200);
+        });
     });
 
     var enroll = new mdui.Dialog("#enroll", Object.assign(mduiDialogOptions, {modal: true}));
