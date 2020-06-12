@@ -199,17 +199,21 @@ async function deleteCode(code) {
 }
 
 async function useCode(code) {
-    if (process.env.ENV === 'dev') return true;
-
-    const url = `${site_config.api_url}/tokens/use`
-    const response = await fetch(url, {
-        method: 'POST',
-        body: JSON.stringify({
-            token: code,
-            useFor: 'INDIVIDUAL_CUSTOMER'
-        })
-    });
-    return await response.text();
+    try {
+        if (process.env.ENV === 'dev') return true;
+        
+        const url = `${site_config.api_url}/tokens/use`
+        const response = await fetch(url, {
+            method: 'POST',
+            body: JSON.stringify({
+                token: code,
+                useFor: 'INDIVIDUAL_CUSTOMER'
+            })
+        });
+        return await response.text();
+    } catch(e) {
+        throw new Error('CODE_HAS_NOT_BEEN_USED');
+    }
 }
 
 async function createAccountMS(req, res) {
