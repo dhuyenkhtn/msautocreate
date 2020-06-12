@@ -203,7 +203,7 @@ async function deleteCode(code) {
     return await response.text();
 }
 
-async function useCode(code) {
+async function useCode(code, email) {
     try {
         if (process.env.ENV === 'dev') return true;
         
@@ -212,7 +212,7 @@ async function useCode(code) {
             method: 'POST',
             body: JSON.stringify({
                 token: code,
-                useFor: 'INDIVIDUAL_CUSTOMER'
+                useFor: email
             }),
             headers: { 'Content-Type': 'application/json' }
         };
@@ -238,7 +238,7 @@ async function createAccountMS(req, res) {
             const account = await createUser(requestBody, ms_token);
             
             if (account.stat == 'success') {
-                await useCode(requestBody.code);
+                await useCode(requestBody.code, account.email);
             }
             
             return res.status(200).send(account);
