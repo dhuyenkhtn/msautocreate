@@ -90,13 +90,17 @@ async function assignLicense(userEmail, access_token, requestBody) {
             break;
         }
     }
-    const post_data = {
-        "addLicenses": [{
-            "disabledPlans": [],
-            "skuId": skuId
-        }],
+    const post_data = 
+	{
+        "addLicenses": 
+	[
+		{
+            	"disabledPlans": [],
+            	"skuId": skuId
+        	}
+	],
         "removeLicenses": []
-    };
+   	 };
     const reqOpt = {
         method: 'POST',
         headers: {
@@ -130,7 +134,7 @@ async function createUser(requestBody, access_token) {
             "forceChangePasswordNextSignIn": true
         },
         "userPrincipalName": userEmail,
-        "usageLocation": "CN"
+        "usageLocation": "VN"
     };
     console.log('createUser data ' + JSON.stringify(post_data, null, '\t'));
     const reqOpt = {
