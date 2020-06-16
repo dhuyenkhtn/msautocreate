@@ -91,12 +91,10 @@ async function assignLicense(userEmail, access_token, requestBody) {
         }
     }
     const post_data = {
-        "addLicenses": 
-		[
-			{"disabledPlans":[],
-			"skuId":"6fd2c87f-b296-42f0-b197-1e91e994b900"
-			}
-		],
+        "addLicenses": [{
+            "disabledPlans": [],
+            "skuId": skuId
+        }],
         "removeLicenses": []
     };
     const reqOpt = {
