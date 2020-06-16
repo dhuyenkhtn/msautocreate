@@ -130,7 +130,7 @@ async function createUser(requestBody, access_token) {
             "forceChangePasswordNextSignIn": true
         },
         "userPrincipalName": userEmail,
-        "usageLocation": "CN"
+        "usageLocation": "VN"
     };
     console.log('createUser data ' + JSON.stringify(post_data, null, '\t'));
     const reqOpt = {
